@@ -2310,6 +2310,7 @@ __metadata:
     "@types/node": ^17.0.35
     "@types/nprogress": ^0
     "@types/react": ^18.0.9
+    "@types/react-canvas-draw": ^1.2.3
     "@types/react-color": ^3.0.12
     "@types/react-copy-to-clipboard": ^5.0.4
     "@typescript-eslint/eslint-plugin": ^5.39.0
@@ -2331,6 +2332,7 @@ __metadata:
     prettier: ^3.3.2
     qrcode.react: ^3.1.0
     react: ^18.2.0
+    react-canvas-draw: ^1.2.1
     react-color: ^2.19.3
     react-copy-to-clipboard: ^5.1.0
     react-dom: ^18.2.0
@@ -2991,6 +2993,15 @@ __metadata:
   version: 6.9.8
   resolution: "@types/qs@npm:6.9.8"
   checksum: c28e07d00d07970e5134c6eed184a0189b8a4649e28fdf36d9117fe671c067a44820890de6bdecef18217647a95e9c6aebdaaae69f5fe4b0bec9345db885f77e
+  languageName: node
+  linkType: hard
+
+"@types/react-canvas-draw@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "@types/react-canvas-draw@npm:1.2.3"
+  dependencies:
+    "@types/react": "*"
+  checksum: 9acb4c265b89b5561f2ddc0648a06105cf24fd08bec7dc28eb0cfd6faced6410d0f78fb393456ce44b91b6aa3fdd05c621ba4f229972f81bd8577ffc26252073
   languageName: node
   linkType: hard
 
@@ -5076,6 +5087,13 @@ __metadata:
   version: 0.12.0
   resolution: "caseless@npm:0.12.0"
   checksum: b43bd4c440aa1e8ee6baefee8063b4850fd0d7b378f6aabc796c9ec8cb26d27fb30b46885350777d9bd079c5256c0e1329ad0dc7c2817e0bb466810ebb353751
+  languageName: node
+  linkType: hard
+
+"catenary-curve@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "catenary-curve@npm:1.0.1"
+  checksum: 84db3f2d38ecde70dec2286b70c78fd231201a9e3e4ac6b7453e7f391d369b0bcca058297c017432398215d6aaa5efcdd0dee3b1d83ae215983cd0d229d1a5d9
   languageName: node
   linkType: hard
 
@@ -9687,6 +9705,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lazy-brush@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "lazy-brush@npm:1.0.1"
+  checksum: bdbd0b937a6f37fb1fd0b69a9b2ac197d3baa6a58d815ec3e3456c10257a7c6853f50ff852d73fa6827a38feceacf06cb86f245a73b8f061d6d53ba046a3c94f
+  languageName: node
+  linkType: hard
+
 "level-supports@npm:^4.0.0":
   version: 4.0.1
   resolution: "level-supports@npm:4.0.1"
@@ -11845,7 +11870,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.5.10, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.5.10, prop-types@npm:^15.6.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -12014,6 +12039,20 @@ __metadata:
     iconv-lite: 0.4.24
     unpipe: 1.0.0
   checksum: ba1583c8d8a48e8fbb7a873fdbb2df66ea4ff83775421bfe21ee120140949ab048200668c47d9ae3880012f6e217052690628cf679ddfbd82c9fc9358d574676
+  languageName: node
+  linkType: hard
+
+"react-canvas-draw@npm:^1.2.1":
+  version: 1.2.1
+  resolution: "react-canvas-draw@npm:1.2.1"
+  dependencies:
+    catenary-curve: ^1.0.1
+    lazy-brush: ^1.0.1
+    prop-types: ^15.6.2
+    resize-observer-polyfill: ^1.5.0
+  peerDependencies:
+    react: 16.x || 17.x
+  checksum: cfdc539704ea40c91818b76861903eabe4d00f400ade06bfe62b4005b45f8daaff53589512a32773377e2ca7e614ca9906bf3bb4db9f5d2bca0ae56a92a5befb
   languageName: node
   linkType: hard
 
@@ -12403,6 +12442,13 @@ __metadata:
   version: 2.0.0
   resolution: "require-main-filename@npm:2.0.0"
   checksum: e9e294695fea08b076457e9ddff854e81bffbe248ed34c1eec348b7abbd22a0d02e8d75506559e2265e96978f3c4720bd77a6dad84755de8162b357eb6c778c7
+  languageName: node
+  linkType: hard
+
+"resize-observer-polyfill@npm:^1.5.0":
+  version: 1.5.1
+  resolution: "resize-observer-polyfill@npm:1.5.1"
+  checksum: 57e7f79489867b00ba43c9c051524a5c8f162a61d5547e99333549afc23e15c44fd43f2f318ea0261ea98c0eb3158cca261e6f48d66e1ed1cd1f340a43977094
   languageName: node
   linkType: hard
 
