@@ -24,7 +24,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { width = 1, height = 1 } = useWindowSize({ initializeWithValue: false, debounceDelay: 500 });
   const calculatedCanvaSize = Math.round(0.8 * Math.min(width, height));
-  const colorPickerSize = Math.round(0.5 * calculatedCanvaSize).toString();
+  const colorPickerSize = Math.round(0.5 * calculatedCanvaSize).toString() + "px";
 
   useEffect(() => {
     if (calculatedCanvaSize !== 1) {
@@ -39,6 +39,7 @@ const Home: NextPage = () => {
   if (loading) {
     return <span className="flex flex-col m-auto loading loading-spinner loading-sm"></span>;
   }
+
   return (
     <>
       {finalDrawing ? (
@@ -60,6 +61,24 @@ const Home: NextPage = () => {
         </div>
       ) : (
         <div className="flex items-center flex-col flex-grow pt-5">
+          <div className="flex flex-row gap-2 mb-2">
+            <button
+              className="btn btn-sm btn-secondary"
+              onClick={() => {
+                drawingCanvas.current?.undo();
+              }}
+            >
+              <ArrowUturnLeftIcon className="h-4 w-4" /> UNDO
+            </button>
+            <button
+              className="btn btn-sm btn-secondary"
+              onClick={() => {
+                drawingCanvas?.current?.clear();
+              }}
+            >
+              <TrashIcon className="h-4 w-4" /> Clear
+            </button>
+          </div>
           <div className={`${canvasDisabled ? "cursor-not-allowed" : "cursor-none"}`}>
             <CanvasDraw
               key={"canvas"}
@@ -76,33 +95,11 @@ const Home: NextPage = () => {
             />
           </div>
 
-          <div className="flex flex-row m-2">
-            <CirclePicker
-              color={color}
-              onChangeComplete={updateColor}
-              circleSpacing={3}
-              width={colorPickerSize + "px"}
-              className="h-0"
-            />
-            <div className="flex flex-col ml-3 gap-1">
+          <div className="flex flex-col m-2">
+            <CirclePicker color={color} onChangeComplete={updateColor} circleSpacing={4} width={colorPickerSize} />
+            <div className="flex justify-center mt-2">
               <button
-                className="btn btn-sm btn-primary"
-                onClick={() => {
-                  drawingCanvas.current?.undo();
-                }}
-              >
-                <ArrowUturnLeftIcon className="h-4 w-4" /> UNDO
-              </button>
-              <button
-                className="btn btn-sm btn-primary"
-                onClick={() => {
-                  drawingCanvas?.current?.clear();
-                }}
-              >
-                <TrashIcon className="h-4 w-4" /> Clear
-              </button>
-              <button
-                className="btn btn-sm btn-primary"
+                className="btn btn-primary"
                 onClick={() => {
                   setCanvasDisabled(true);
                   console.log(drawingCanvas?.current?.canvas.drawing.toDataURL());
