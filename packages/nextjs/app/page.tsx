@@ -24,7 +24,7 @@ const Home: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const { width = 1, height = 1 } = useWindowSize({ initializeWithValue: false, debounceDelay: 500 });
   const calculatedCanvaSize = Math.round(0.8 * Math.min(width, height));
-  const colorPickerSize = Math.round(0.5 * calculatedCanvaSize).toString() + "px";
+  const colorPickerSize = Math.round(0.84 * calculatedCanvaSize).toString() + "px";
 
   useEffect(() => {
     if (calculatedCanvaSize !== 1) {
@@ -95,11 +95,11 @@ const Home: NextPage = () => {
             />
           </div>
 
-          <div className="flex flex-col m-2">
+          <div className="flex flex-col mt-2">
             <CirclePicker color={color} onChangeComplete={updateColor} circleSpacing={4} width={colorPickerSize} />
             <div className="flex justify-center mt-2">
               <button
-                className="btn btn-primary"
+                className="btn btn-block btn-primary"
                 onClick={() => {
                   setCanvasDisabled(true);
                   console.log(drawingCanvas?.current?.canvas.drawing.toDataURL());
