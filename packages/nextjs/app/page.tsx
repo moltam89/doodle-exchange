@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import type { NextPage } from "next";
 import CanvasDraw from "react-canvas-draw";
 import { CirclePicker } from "react-color";
@@ -56,7 +57,12 @@ const Home: NextPage = () => {
             </button>
           </h3>
           <div className="border-2 bg-white">
-            <img width={calculatedCanvaSize} height={calculatedCanvaSize} src={`${finalDrawing}`} />
+            <Image
+              width={calculatedCanvaSize}
+              height={calculatedCanvaSize}
+              src={`${finalDrawing}`}
+              alt="Your drawing"
+            />
           </div>
         </div>
       ) : (
