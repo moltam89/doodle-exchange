@@ -4,6 +4,9 @@
   <a href="https://fast-draw.vercel.app/">Website</a>
 </h4>
 
+<img width="1510" alt="image" src="https://github.com/user-attachments/assets/9726a222-d285-4b21-a1f5-2505f174ea89">
+
+
 Fast-draw is an intuitive app that lets you select colors and create drawings with ease. You can undo any action or clear the entire canvas at any time. Once you're satisfied with your drawing, simply click the submit button to view the final result. Additionally, the app will output the image in base64 encoded format to the console.
 
 ## Requirements
