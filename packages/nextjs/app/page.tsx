@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { getGpt4oClassify } from "./classifty/route";
+import { getGpt4oClassify } from "./classify";
 import type { NextPage } from "next";
 import CanvasDraw from "react-canvas-draw";
 import { CirclePicker } from "react-color";
