@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { getGpt4oClassify } from "./classify";
+import { getWord } from "./getWord";
 import type { NextPage } from "next";
 import CanvasDraw from "react-canvas-draw";
 import { CirclePicker } from "react-color";
@@ -24,11 +25,25 @@ const Home: NextPage = () => {
   const [canvasDisabled, setCanvasDisabled] = useState<boolean>(false);
   const [finalDrawing, setFinalDrawing] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [drawWord, setDrawWord] = useState<string>("");
   const [gptAnswer, setGPTAnswer] = useState<string>("");
 
   const { width = 1, height = 1 } = useWindowSize({ initializeWithValue: false, debounceDelay: 500 });
   const calculatedCanvaSize = Math.round(0.8 * Math.min(width, height));
   const colorPickerSize = Math.round(0.95 * calculatedCanvaSize).toString() + "px";
+
+  const fetchWord = async () => {
+    const response = await getWord();
+    if (response?.success) {
+      setDrawWord(response?.success);
+    }
+  };
+
+  useEffect(() => {
+    if (!drawWord) {
+      fetchWord();
+    }
+  }, []);
 
   useEffect(() => {
     if (calculatedCanvaSize !== 1) {
@@ -66,12 +81,15 @@ const Home: NextPage = () => {
                 <button
                   className="btn btn-sm btn-primary block mb-2"
                   onClick={() => {
-                    setFinalDrawing("");
+                    if (gptAnswer.toLowerCase() === drawWord) {
+                      fetchWord();
+                    }
                     setCanvasDisabled(false);
                     setGPTAnswer("");
+                    setFinalDrawing("");
                   }}
                 >
-                  Start a new drawing
+                  {gptAnswer.toLowerCase() === drawWord ? "Start a new game" : "Try again"}
                 </button>
                 GPT sees <span className="font-bold">{gptAnswer}</span>
               </>
@@ -92,6 +110,9 @@ const Home: NextPage = () => {
       ) : (
         <>
           <div className="flex flex-row gap-2 mb-2">
+            <div className="m-auto">
+              Your task is to draw <span className="font-bold">{drawWord}</span>
+            </div>
             <button
               className="btn btn-sm btn-secondary"
               onClick={() => {
