@@ -28,7 +28,7 @@ const Home: NextPage = () => {
 
   const { width = 1, height = 1 } = useWindowSize({ initializeWithValue: false, debounceDelay: 500 });
   const calculatedCanvaSize = Math.round(0.8 * Math.min(width, height));
-  const colorPickerSize = Math.round(0.84 * calculatedCanvaSize).toString() + "px";
+  const colorPickerSize = Math.round(0.95 * calculatedCanvaSize).toString() + "px";
 
   useEffect(() => {
     if (calculatedCanvaSize !== 1) {
@@ -45,7 +45,6 @@ const Home: NextPage = () => {
   }
 
   const handleSubmit = async () => {
-    setLoading(true);
     setCanvasDisabled(true);
     console.log(drawingCanvas?.current?.canvas.drawing.toDataURL());
     setFinalDrawing(drawingCanvas?.current?.canvas.drawing.toDataURL());
@@ -55,29 +54,29 @@ const Home: NextPage = () => {
     } else {
       console.log("error with classification fetching part");
     }
-    setLoading(false);
   };
 
   return (
-    <>
+    <div className="flex items-center flex-col flex-grow pt-3">
       {finalDrawing ? (
-        <div className="flex items-center flex-col flex-grow pt-10">
-          <button
-            className="btn btn-sm btn-primary"
-            onClick={() => {
-              setFinalDrawing("");
-              setCanvasDisabled(false);
-            }}
-          >
-            Start a new drawing
-          </button>
-          <h2 className="mt-2 text-center">
+        <>
+          <h2 className="mt-1.5 text-center">
             {gptAnswer ? (
               <>
+                <button
+                  className="btn btn-sm btn-primary block mb-2"
+                  onClick={() => {
+                    setFinalDrawing("");
+                    setCanvasDisabled(false);
+                    setGPTAnswer("");
+                  }}
+                >
+                  Start a new drawing
+                </button>
                 GPT sees <span className="font-bold">{gptAnswer}</span>
               </>
             ) : (
-              ""
+              <span className="flex flex-col m-auto loading loading-spinner loading-sm"></span>
             )}
           </h2>
 
@@ -89,9 +88,9 @@ const Home: NextPage = () => {
               alt="Your drawing"
             />
           </div>
-        </div>
+        </>
       ) : (
-        <div className="flex items-center flex-col flex-grow pt-5">
+        <>
           <div className="flex flex-row gap-2 mb-2">
             <button
               className="btn btn-sm btn-secondary"
@@ -134,9 +133,9 @@ const Home: NextPage = () => {
               </button>
             </div>
           </div>
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 };
 
