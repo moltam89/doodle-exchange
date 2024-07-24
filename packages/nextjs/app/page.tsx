@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { getGpt4oClassify } from "./classify";
 import type { NextPage } from "next";
 import CanvasDraw from "react-canvas-draw";
 import { CirclePicker } from "react-color";
@@ -23,9 +24,11 @@ const Home: NextPage = () => {
   const [canvasDisabled, setCanvasDisabled] = useState<boolean>(false);
   const [finalDrawing, setFinalDrawing] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const [gptAnswer, setGPTAnswer] = useState<string>("");
+
   const { width = 1, height = 1 } = useWindowSize({ initializeWithValue: false, debounceDelay: 500 });
   const calculatedCanvaSize = Math.round(0.8 * Math.min(width, height));
-  const colorPickerSize = Math.round(0.84 * calculatedCanvaSize).toString() + "px";
+  const colorPickerSize = Math.round(0.95 * calculatedCanvaSize).toString() + "px";
 
   useEffect(() => {
     if (calculatedCanvaSize !== 1) {
@@ -41,21 +44,42 @@ const Home: NextPage = () => {
     return <span className="flex flex-col m-auto loading loading-spinner loading-sm"></span>;
   }
 
+  const handleSubmit = async () => {
+    setCanvasDisabled(true);
+    console.log(drawingCanvas?.current?.canvas.drawing.toDataURL());
+    setFinalDrawing(drawingCanvas?.current?.canvas.drawing.toDataURL());
+    const response = await getGpt4oClassify(drawingCanvas?.current?.canvas.drawing.toDataURL());
+    if (response?.answer) {
+      setGPTAnswer(response?.answer);
+    } else {
+      console.log("error with classification fetching part");
+    }
+  };
+
   return (
-    <>
+    <div className="flex items-center flex-col flex-grow pt-3">
       {finalDrawing ? (
-        <div className="flex items-center flex-col flex-grow pt-10">
-          <h3 className="text-center">
-            <button
-              className="btn btn-sm btn-primary"
-              onClick={() => {
-                setFinalDrawing("");
-                setCanvasDisabled(false);
-              }}
-            >
-              Start a new drawing
-            </button>
-          </h3>
+        <>
+          <h2 className="mt-1.5 text-center">
+            {gptAnswer ? (
+              <>
+                <button
+                  className="btn btn-sm btn-primary block mb-2"
+                  onClick={() => {
+                    setFinalDrawing("");
+                    setCanvasDisabled(false);
+                    setGPTAnswer("");
+                  }}
+                >
+                  Start a new drawing
+                </button>
+                GPT sees <span className="font-bold">{gptAnswer}</span>
+              </>
+            ) : (
+              <span className="flex flex-col m-auto loading loading-spinner loading-sm"></span>
+            )}
+          </h2>
+
           <div className="border-2 bg-white">
             <Image
               width={calculatedCanvaSize}
@@ -64,9 +88,9 @@ const Home: NextPage = () => {
               alt="Your drawing"
             />
           </div>
-        </div>
+        </>
       ) : (
-        <div className="flex items-center flex-col flex-grow pt-5">
+        <>
           <div className="flex flex-row gap-2 mb-2">
             <button
               className="btn btn-sm btn-secondary"
@@ -104,21 +128,14 @@ const Home: NextPage = () => {
           <div className="flex flex-col mt-2">
             <CirclePicker color={color} onChangeComplete={updateColor} circleSpacing={4} width={colorPickerSize} />
             <div className="flex justify-center mt-2">
-              <button
-                className="btn btn-block btn-primary"
-                onClick={() => {
-                  setCanvasDisabled(true);
-                  console.log(drawingCanvas?.current?.canvas.drawing.toDataURL());
-                  setFinalDrawing(drawingCanvas?.current?.canvas.drawing.toDataURL());
-                }}
-              >
+              <button className="btn btn-block btn-primary" onClick={handleSubmit}>
                 Submit
               </button>
             </div>
           </div>
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 };
 
