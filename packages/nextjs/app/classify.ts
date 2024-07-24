@@ -15,6 +15,7 @@ export async function getGpt4oClassify(image: string) {
             type: "image_url",
             image_url: {
               url: image,
+              detail: "low",
             },
           },
         ],
