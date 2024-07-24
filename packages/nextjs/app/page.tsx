@@ -72,7 +72,7 @@ const Home: NextPage = () => {
   };
 
   const resetGame = () => {
-    if (gptAnswer.toLowerCase() === drawWord) {
+    if (gptAnswer.toLowerCase() === drawWord.toLowerCase()) {
       fetchWord();
     }
     setCanvasDisabled(false);
@@ -92,7 +92,7 @@ const Home: NextPage = () => {
             {gptAnswer ? (
               <>
                 <button className="btn btn-sm btn-primary block mb-2" onClick={resetGame}>
-                  {gptAnswer.toLowerCase() === drawWord ? "Start a new game" : "Try again"}
+                  {gptAnswer.toLowerCase() === drawWord.toLowerCase() ? "Start a new game" : "Try again"}
                 </button>
                 GPT sees <span className="font-bold">{gptAnswer}</span>
               </>
@@ -150,7 +150,13 @@ const Home: NextPage = () => {
           </div>
 
           <div className="flex flex-col mt-2">
-            <CirclePicker color={color} onChangeComplete={updateColor} circleSpacing={4} width={colorPickerSize} />
+            <CirclePicker
+              color={color}
+              onChangeComplete={updateColor}
+              circleSpacing={4}
+              width={colorPickerSize}
+              className="max-w-xl"
+            />
             <div className="flex justify-center mt-2">
               <button className="btn btn-block btn-primary" onClick={handleSubmit}>
                 Submit
