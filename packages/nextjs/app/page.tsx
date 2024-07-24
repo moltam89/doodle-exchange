@@ -88,19 +88,20 @@ const Home: NextPage = () => {
     <div className="flex items-center flex-col flex-grow pt-3">
       {finalDrawing ? (
         <>
-          <h2 className="mt-1.5 text-center">
+          <div className="mb-1.5 text-center">
             {gptAnswer ? (
-              <>
-                <button className="btn btn-sm btn-primary block mb-2" onClick={resetGame}>
+              <div className="flex flex-col items-center">
+                <button className="btn btn-sm btn-primary mb-1" onClick={resetGame}>
                   {gptAnswer.toLowerCase() === drawWord.toLowerCase() ? "Start a new game" : "Try again"}
                 </button>
-                GPT sees <span className="font-bold">{gptAnswer}</span>
-              </>
+                <div>
+                  GPT sees <span className="font-bold">{gptAnswer}</span>
+                </div>
+              </div>
             ) : (
               <span className="flex flex-col m-auto loading loading-spinner loading-sm"></span>
             )}
-          </h2>
-
+          </div>
           <div className="border-2 bg-white">
             <Image
               width={calculatedCanvaSize}
