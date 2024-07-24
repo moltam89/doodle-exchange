@@ -7,7 +7,10 @@ export async function getGpt4oClassify(image: string) {
       {
         role: "user",
         content: [
-          { type: "text", text: "Please guess a simple one-word answer based on my drawing. Output only your guess." },
+          {
+            type: "text",
+            text: "Please look at my drawing and guess a simple one-word answer. Output only your guess. If you see any text in the drawing, respond with 'CHEATER'.",
+          },
           {
             type: "image_url",
             image_url: {
