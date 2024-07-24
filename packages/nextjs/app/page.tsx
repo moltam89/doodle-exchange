@@ -8,7 +8,7 @@ import type { NextPage } from "next";
 import CanvasDraw from "react-canvas-draw";
 import { CirclePicker } from "react-color";
 import { useWindowSize } from "usehooks-ts";
-import { ArrowUturnLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { ArrowUturnLeftIcon, ForwardIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 interface CanvasDrawLines extends CanvasDraw {
   canvas: any;
@@ -112,26 +112,36 @@ const Home: NextPage = () => {
         </>
       ) : (
         <>
-          <div className="flex flex-row gap-2 mb-2">
+          <div className="flex flex-col gap-2 mb-2">
             <div className="m-auto">
-              Your task is to draw <span className="font-bold">{drawWord}</span>
+              <span className="text-3xl">{drawWord}</span>
             </div>
-            <button
-              className="btn btn-sm btn-secondary"
-              onClick={() => {
-                drawingCanvas.current?.undo();
-              }}
-            >
-              <ArrowUturnLeftIcon className="h-4 w-4" /> UNDO
-            </button>
-            <button
-              className="btn btn-sm btn-secondary"
-              onClick={() => {
-                drawingCanvas?.current?.clear();
-              }}
-            >
-              <TrashIcon className="h-4 w-4" /> Clear
-            </button>
+            <div>
+              <button
+                className="btn btn-sm btn-secondary"
+                onClick={() => {
+                  fetchWord();
+                }}
+              >
+                <ForwardIcon className="h-4 w-4" /> Skip
+              </button>
+              <button
+                className="btn btn-sm btn-secondary"
+                onClick={() => {
+                  drawingCanvas.current?.undo();
+                }}
+              >
+                <ArrowUturnLeftIcon className="h-4 w-4" /> UNDO
+              </button>
+              <button
+                className="btn btn-sm btn-secondary"
+                onClick={() => {
+                  drawingCanvas?.current?.clear();
+                }}
+              >
+                <TrashIcon className="h-4 w-4" /> Clear
+              </button>
+            </div>
           </div>
           <div className={`${canvasDisabled ? "cursor-not-allowed" : "cursor-none"}`}>
             <CanvasDraw
