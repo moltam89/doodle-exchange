@@ -121,14 +121,6 @@ const Home: NextPage = () => {
               <button
                 className="btn btn-sm btn-secondary"
                 onClick={() => {
-                  fetchWord();
-                }}
-              >
-                <ForwardIcon className="h-4 w-4" /> Skip
-              </button>
-              <button
-                className="btn btn-sm btn-secondary"
-                onClick={() => {
                   drawingCanvas.current?.undo();
                 }}
               >
@@ -141,6 +133,14 @@ const Home: NextPage = () => {
                 }}
               >
                 <TrashIcon className="h-4 w-4" /> Clear
+              </button>
+              <button
+                className="btn btn-sm btn-secondary"
+                onClick={() => {
+                  fetchWord();
+                }}
+              >
+                <ForwardIcon className="h-4 w-4" /> Skip
               </button>
             </div>
           </div>
