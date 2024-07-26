@@ -8,7 +8,9 @@ import type { NextPage } from "next";
 import CanvasDraw from "react-canvas-draw";
 import { CirclePicker } from "react-color";
 import { useWindowSize } from "usehooks-ts";
+import { useAccount } from "wagmi";
 import { ArrowUturnLeftIcon, ForwardIcon, TrashIcon } from "@heroicons/react/24/outline";
+import { uploadToFirebase } from "~~/utils/uploadToFirebase";
 
 interface CanvasDrawLines extends CanvasDraw {
   canvas: any;
@@ -20,6 +22,7 @@ interface CanvasDrawLines extends CanvasDraw {
 }
 
 const Home: NextPage = () => {
+  const { address: connectedAddress } = useAccount();
   const drawingCanvas = useRef<CanvasDrawLines>(null);
   const [color, setColor] = useState<string>("rgba(96,125,139,100)");
   const [canvasDisabled, setCanvasDisabled] = useState<boolean>(false);
@@ -66,6 +69,7 @@ const Home: NextPage = () => {
     const response = await getGpt4oClassify(drawingCanvas?.current?.canvas.drawing.toDataURL());
     if (response?.answer) {
       setGPTAnswer(response?.answer);
+      uploadToFirebase(drawWord, response?.answer, connectedAddress || "", drawingDataUrl);
     } else {
       console.log("error with classification fetching part");
     }
