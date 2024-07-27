@@ -21,7 +21,7 @@ const connectdb = async () => {
     await ablyRealtime.connection.once("connected");
     ablyRealtime.channels.get(`gameUpdate`);
     await mongoose.connect(MONGODB_URI, {
-      dbName: "scribblepics",
+      dbName: "doodleExchange",
       bufferCommands: false,
     });
     console.log("Connected");
