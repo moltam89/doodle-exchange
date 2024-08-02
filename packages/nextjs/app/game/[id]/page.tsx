@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Host from "../_components/Host";
+import Lobby from "../_components/Lobby";
 import Player from "../_components/Player";
 import Ably from "ably";
 import { useAccount } from "wagmi";
@@ -77,6 +78,8 @@ const GamePage = () => {
 
   if (isHost && game) {
     return <Host game={game as Game} token={token} />;
+  } else if (isPlayer && game && game?.status == "lobby") {
+    return <Lobby game={game as Game} />;
   } else if (isPlayer && game) {
     return <Player game={game as Game} />;
   } else {

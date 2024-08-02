@@ -86,6 +86,8 @@ const Player = ({ game }: { game: Game }) => {
     return <span className="flex flex-col m-auto loading loading-spinner loading-sm"></span>;
   }
 
+  console.log(game);
+
   return (
     <div className="flex items-center flex-col flex-grow pt-3">
       {finalDrawing ? (
@@ -171,7 +173,7 @@ const Player = ({ game }: { game: Game }) => {
               className="max-w-xl"
             />
             <div className="flex justify-center mt-2">
-              <button className="btn btn-block btn-primary" onClick={handleSubmit} disabled={game.status != "ongoing"}>
+              <button className="btn btn-block btn-primary" onClick={handleSubmit}>
                 Submit
               </button>
             </div>
