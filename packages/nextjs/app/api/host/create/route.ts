@@ -51,14 +51,22 @@ export const GET = async () => {
 
 export const POST = async (request: Request) => {
   try {
+    console.log("yooooo");
+
     const body = await request.json();
     const { hostAddress } = body;
 
     await connectdb();
+
+    const round = {
+      word: "exampleWord",
+    };
+
     const newGame = new Game({
       hostAddress,
       status: "lobby",
       inviteCode: await generateUniqueInvite(8),
+      rounds: [round],
     });
 
     await newGame.save();

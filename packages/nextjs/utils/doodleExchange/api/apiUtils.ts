@@ -2,6 +2,8 @@ import { saveGameState } from "../game";
 import { notification } from "~~/utils/scaffold-eth";
 
 export const joinGame = async (invite: string, address: string) => {
+  console.log("joinGame", invite, address);
+
   const response = await fetch("/api/player/join", {
     method: "PATCH",
     headers: {
@@ -12,6 +14,31 @@ export const joinGame = async (invite: string, address: string) => {
   });
 
   const updatedGame = await response.json();
+  console.log("updatedGame", updatedGame);
+
+  if (updatedGame.error) {
+    notification.error(updatedGame.error);
+    return { success: false };
+  }
+
+  saveGameState(JSON.stringify(updatedGame));
+  return { success: true };
+};
+
+export const submitWord = async (id: string, playerAddress: string, word: string) => {
+  console.log("submitWord", id, playerAddress, word);
+
+  const response = await fetch("/api/player/submit", {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id, playerAddress, word}),
+  });
+
+  const updatedGame = await response.json();
+  console.log("updatedGame", updatedGame);
 
   if (updatedGame.error) {
     notification.error(updatedGame.error);

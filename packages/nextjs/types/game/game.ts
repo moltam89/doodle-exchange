@@ -1,3 +1,17 @@
+export interface Submission {
+  player: string;
+  word: string;
+  timestamp?: Date;
+}
+
+export interface Round {
+  word: string;
+  submissions: Submission[];
+  winner?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
 export interface Game {
   _id: string;
   hostAddress: string;
@@ -5,4 +19,5 @@ export interface Game {
   inviteCode: string;
   players: string[];
   winner?: string;
+  rounds: Round[];
 }

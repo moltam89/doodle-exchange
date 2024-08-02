@@ -1,5 +1,35 @@
 import mongoose from "mongoose";
 
+// Define the schema for each round
+const roundSchema = new mongoose.Schema(
+  {
+    word: {
+      type: String,
+      required: true,
+    },
+    submissions: [
+      {
+        player: {
+          type: String,
+          required: true,
+        },
+        word: {
+          type: String,
+          required: true,
+        },
+        timestamp: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
+    winner: {
+      type: String,
+    },
+  },
+  { timestamps: true },
+);
+
 const gameSchema = new mongoose.Schema(
   {
     hostAddress: {
@@ -34,6 +64,7 @@ const gameSchema = new mongoose.Schema(
     winner: {
       type: String,
     },
+    rounds: [roundSchema],
   },
   { timestamps: true },
 );

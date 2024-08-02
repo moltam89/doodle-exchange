@@ -9,6 +9,7 @@ import { getGpt4oClassify } from "~~/app/classify";
 import { getWord } from "~~/app/getWord";
 import { Game } from "~~/types/game/game";
 import { uploadToFirebase } from "~~/utils/uploadToFirebase";
+import { submitWord } from "~~/utils/doodleExchange/api/apiUtils";
 
 interface CanvasDrawLines extends CanvasDraw {
   canvas: any;
@@ -19,7 +20,7 @@ interface CanvasDrawLines extends CanvasDraw {
   };
 }
 
-const Player = ({ game }: { game: Game }) => {
+const Player = ({ game, token }: { game: Game; token: string }) => {
   const { address: connectedAddress } = useAccount();
   const drawingCanvas = useRef<CanvasDrawLines>(null);
   const [color, setColor] = useState<string>("rgba(96,125,139,100)");
@@ -67,7 +68,8 @@ const Player = ({ game }: { game: Game }) => {
     const response = await getGpt4oClassify(drawingCanvas?.current?.canvas.drawing.toDataURL());
     if (response?.answer) {
       setGPTAnswer(response?.answer);
-      uploadToFirebase(drawWord, response?.answer, connectedAddress || "", drawingDataUrl);
+      submitWord(game._id, connectedAddress || "", response.answer);
+      //uploadToFirebase(drawWord, response?.answer, connectedAddress || "", drawingDataUrl);
     } else {
       console.log("error with classification fetching part");
     }

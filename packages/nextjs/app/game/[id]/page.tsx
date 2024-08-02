@@ -78,7 +78,7 @@ const GamePage = () => {
   if (isHost && game) {
     return <Host game={game as Game} token={token} />;
   } else if (isPlayer && game) {
-    return <Player game={game as Game} />;
+    return <Player game={game as Game} token={token}/>;
   } else {
     return (
       <div className="p-4">
