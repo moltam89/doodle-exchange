@@ -65,6 +65,10 @@ const gameSchema = new mongoose.Schema(
       type: String,
     },
     rounds: [roundSchema],
+    activeRoundIndex: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true },
 );

@@ -20,4 +20,5 @@ export interface Game {
   players: string[];
   winner?: string;
   rounds: Round[];
+  activeRoundIndex: number;
 }

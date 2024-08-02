@@ -4,6 +4,9 @@ import doodleConfig from "~~/doodle.config";
 import connectdb from "~~/lib/db";
 import Game from "~~/lib/models/Game";
 import Invites from "~~/lib/models/Invites";
+import { getWord } from "~~/app/getWord";
+
+const ROUND_COUNT = 5;
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || doodleConfig.jwt_secret);
 
@@ -58,15 +61,17 @@ export const POST = async (request: Request) => {
 
     await connectdb();
 
-    const round = {
-      word: "exampleWord",
-    };
+    const rounds = [];
+    for (let i = 0; i < ROUND_COUNT; i++) {
+      const word = (await getWord()).success;
+      rounds.push({ word });
+    }
 
     const newGame = new Game({
       hostAddress,
       status: "lobby",
       inviteCode: await generateUniqueInvite(8),
-      rounds: [round],
+      rounds,
     });
 
     await newGame.save();

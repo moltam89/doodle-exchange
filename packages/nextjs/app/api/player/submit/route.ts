@@ -8,7 +8,7 @@ import { time } from "console";
 export const PATCH = async (request: Request) => {
   try {
     const body = await request.json();
-    const { id, playerAddress, word } = body;
+    const { id, playerAddress, roundIndex, word } = body;
     const game = await Game.findById(id);
 
     if (!game || id.length == 0) {
@@ -19,8 +19,7 @@ export const PATCH = async (request: Request) => {
       return new NextResponse(JSON.stringify({ error: "Player address is null " }), { status: 403 });
     }
 
-    //game.submissions.push({ player: playerAddress, word, timestamp: new Date() });
-    game.rounds[0].submissions.push({ player: playerAddress, word, timestamp: new Date() });
+    game.rounds[roundIndex].submissions.push({ player: playerAddress, word, timestamp: new Date() });
 
     const savedGame = await game.save();
 

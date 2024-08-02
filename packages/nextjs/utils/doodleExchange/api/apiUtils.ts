@@ -25,16 +25,14 @@ export const joinGame = async (invite: string, address: string) => {
   return { success: true };
 };
 
-export const submitWord = async (id: string, playerAddress: string, word: string) => {
-  console.log("submitWord", id, playerAddress, word);
-
+export const submitWord = async (id: string, playerAddress: string, roundIndex: number, word: string) => {
   const response = await fetch("/api/player/submit", {
     method: "PATCH",
     headers: {
       Authorization: `Bearer`,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id, playerAddress, word}),
+    body: JSON.stringify({ id, playerAddress, roundIndex, word }),
   });
 
   const updatedGame = await response.json();
@@ -67,4 +65,24 @@ export const updateGameStatus = async (id: string, newStatus: string, token: str
   }
 
   notification.success(`Game ${newStatus}`);
+};
+
+export const updateGameRound = async (id: string, token: string) => {
+  const response = await fetch("/api/host/updateround", {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id: id }),
+  });
+
+  const updatedGame = await response.json();
+
+  if (updatedGame.error) {
+    notification.error(updatedGame.error);
+    return;
+  }
+
+  notification.success("Next Round Started");
 };

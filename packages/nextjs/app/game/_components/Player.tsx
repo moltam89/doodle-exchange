@@ -27,27 +27,12 @@ const Player = ({ game, token }: { game: Game; token: string }) => {
   const [canvasDisabled, setCanvasDisabled] = useState<boolean>(false);
   const [finalDrawing, setFinalDrawing] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
-  const [drawWord, setDrawWord] = useState<string>("");
+  const [drawWord, setDrawWord] = useState<string>(game.rounds[game.activeRoundIndex].word);
   const [gptAnswer, setGPTAnswer] = useState<string>("");
 
   const { width = 1, height = 1 } = useWindowSize({ initializeWithValue: false, debounceDelay: 500 });
   const calculatedCanvaSize = Math.round(0.8 * Math.min(width, height));
   const colorPickerSize = Math.round(0.95 * calculatedCanvaSize).toString() + "px";
-
-  const fetchWord = useCallback(async () => {
-    const response = await getWord();
-    if (response?.success) {
-      setDrawWord(response.success);
-    } else {
-      console.log(response);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!drawWord) {
-      fetchWord();
-    }
-  }, []);
 
   useEffect(() => {
     if (calculatedCanvaSize !== 1) {
@@ -68,20 +53,11 @@ const Player = ({ game, token }: { game: Game; token: string }) => {
     const response = await getGpt4oClassify(drawingCanvas?.current?.canvas.drawing.toDataURL());
     if (response?.answer) {
       setGPTAnswer(response?.answer);
-      submitWord(game._id, connectedAddress || "", response.answer);
+      submitWord(game._id, connectedAddress || "", game.activeRoundIndex, response.answer);
       //uploadToFirebase(drawWord, response?.answer, connectedAddress || "", drawingDataUrl);
     } else {
       console.log("error with classification fetching part");
     }
-  };
-
-  const resetGame = () => {
-    if (gptAnswer.toLowerCase() === drawWord.toLowerCase()) {
-      fetchWord();
-    }
-    setCanvasDisabled(false);
-    setGPTAnswer("");
-    setFinalDrawing("");
   };
 
   if (loading) {
@@ -95,9 +71,6 @@ const Player = ({ game, token }: { game: Game; token: string }) => {
           <div className="mb-1.5 text-center">
             {gptAnswer ? (
               <div className="flex flex-col items-center">
-                <button className="btn btn-sm btn-primary mb-1" onClick={resetGame}>
-                  {gptAnswer.toLowerCase() === drawWord.toLowerCase() ? "Start a new game" : "Try again"}
-                </button>
                 <div>
                   GPT sees <span className="font-bold">{gptAnswer}</span>
                 </div>
@@ -137,14 +110,6 @@ const Player = ({ game, token }: { game: Game; token: string }) => {
                 }}
               >
                 <TrashIcon className="h-4 w-4" /> Clear
-              </button>
-              <button
-                className="btn btn-sm btn-secondary"
-                onClick={() => {
-                  fetchWord();
-                }}
-              >
-                <ForwardIcon className="h-4 w-4" /> Skip
               </button>
             </div>
           </div>

@@ -3,7 +3,13 @@ import QRCode from "qrcode.react";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { CheckCircleIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { Game } from "~~/types/game/game";
-import { updateGameStatus } from "~~/utils/doodleExchange/api/apiUtils";
+import { updateGameRound, updateGameStatus } from "~~/utils/doodleExchange/api/apiUtils";
+
+const getPlayerSubmission = (game: Game, player: string) => {
+  const submission = game.rounds[game.activeRoundIndex].submissions.find(submission => submission.player === player);
+
+  return submission?.word || undefined;
+};
 
 const Host = ({ game, token }: { game: Game; token: string }) => {
   const [inviteUrl, setInviteUrl] = useState("");
@@ -17,6 +23,13 @@ const Host = ({ game, token }: { game: Game; token: string }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const player0 = game.players[0];
+  console.log("game.players", game.players);
+  console.log("player0", player0);
+  console.log("game.rounds[game.activeRoundIndex].submissions", game.rounds[game.activeRoundIndex].submissions);
+  //const submission = game.rounds[game.activeRoundIndex].submissions.find(submission => submission.player === player0);
+  console.log("submission", getPlayerSubmission(game, player0));
 
   return (
     <div className="p-6">
@@ -82,9 +95,23 @@ const Host = ({ game, token }: { game: Game; token: string }) => {
       >
         Start Game
       </button>
+      <button
+        className="btn btn-sm btn-primary my-2"
+        onClick={() => {
+          updateGameRound(game._id, token);
+        }}
+      >
+        Start Next Round
+      </button>
       <h1>Lobby {game.players.length}</h1>
+      <h1>Round {game.activeRoundIndex + "/" + game.rounds.length}</h1>
+      <h1>Word {game.rounds[game.activeRoundIndex].word}</h1>
       {game.players.map(player => {
-        return <h1 key={player}>{player}</h1>;
+        return (
+          <div key={player}>
+            <h1>{player + " " + (getPlayerSubmission(game, player) ?? "")} </h1>
+          </div>
+        );
       })}
     </div>
   );
