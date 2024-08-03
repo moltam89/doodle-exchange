@@ -1,7 +1,7 @@
 export interface Submission {
   player: string;
   word: string;
-  timestamp?: Date;
+  timestamp: Date;
 }
 
 export interface Round {

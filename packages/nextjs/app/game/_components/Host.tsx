@@ -4,12 +4,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { CheckCircleIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { Game } from "~~/types/game/game";
 import { updateGameRound, updateGameStatus } from "~~/utils/doodleExchange/api/apiUtils";
-
-const getPlayerSubmission = (game: Game, player: string) => {
-  const submission = game.rounds[game.activeRoundIndex].submissions.find(submission => submission.player === player);
-
-  return submission?.word || undefined;
-};
+import { getPlayerSubmission, getRoundWinner } from "../_helpers/gameHelper";
 
 const Host = ({ game, token }: { game: Game; token: string }) => {
   const [inviteUrl, setInviteUrl] = useState("");
@@ -30,6 +25,7 @@ const Host = ({ game, token }: { game: Game; token: string }) => {
   console.log("game.rounds[game.activeRoundIndex].submissions", game.rounds[game.activeRoundIndex].submissions);
   //const submission = game.rounds[game.activeRoundIndex].submissions.find(submission => submission.player === player0);
   console.log("submission", getPlayerSubmission(game, player0));
+  console.log("getRoundWinner", getRoundWinner(game, game.activeRoundIndex));
 
   return (
     <div className="p-6">

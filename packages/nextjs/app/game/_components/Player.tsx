@@ -10,6 +10,7 @@ import { getWord } from "~~/app/getWord";
 import { Game } from "~~/types/game/game";
 import { uploadToFirebase } from "~~/utils/uploadToFirebase";
 import { submitWord } from "~~/utils/doodleExchange/api/apiUtils";
+import { getPlayerSubmission } from "../_helpers/gameHelper";
 
 interface CanvasDrawLines extends CanvasDraw {
   canvas: any;
@@ -29,10 +30,28 @@ const Player = ({ game, token }: { game: Game; token: string }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [drawWord, setDrawWord] = useState<string>(game.rounds[game.activeRoundIndex].word);
   const [gptAnswer, setGPTAnswer] = useState<string>("");
-
+  const [wordSubmitted, setWordSubmitted] = useState<string>("");
   const { width = 1, height = 1 } = useWindowSize({ initializeWithValue: false, debounceDelay: 500 });
   const calculatedCanvaSize = Math.round(0.8 * Math.min(width, height));
   const colorPickerSize = Math.round(0.95 * calculatedCanvaSize).toString() + "px";
+
+  useEffect(() => {
+    if (!connectedAddress) {
+      return;
+    }
+
+    const submission = getPlayerSubmission(game, connectedAddress);
+
+    if (submission) {
+      setWordSubmitted(submission);
+    }
+
+  }, [connectedAddress]);
+
+  useEffect(() => {
+    setDrawWord(game.rounds[game.activeRoundIndex].word);
+    resetGame();
+  }, [game.activeRoundIndex]);
 
   useEffect(() => {
     if (calculatedCanvaSize !== 1) {
@@ -53,11 +72,17 @@ const Player = ({ game, token }: { game: Game; token: string }) => {
     const response = await getGpt4oClassify(drawingCanvas?.current?.canvas.drawing.toDataURL());
     if (response?.answer) {
       setGPTAnswer(response?.answer);
-      submitWord(game._id, connectedAddress || "", game.activeRoundIndex, response.answer);
+      submitWord(game._id, connectedAddress || "", game.activeRoundIndex, "Bed");
       //uploadToFirebase(drawWord, response?.answer, connectedAddress || "", drawingDataUrl);
     } else {
       console.log("error with classification fetching part");
     }
+  };
+
+  const resetGame = () => {
+    setCanvasDisabled(false);
+    setGPTAnswer("");
+    setFinalDrawing("");
   };
 
   if (loading) {
