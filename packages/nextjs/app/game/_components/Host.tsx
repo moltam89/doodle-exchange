@@ -74,14 +74,16 @@ const Host = ({ game, token }: { game: Game; token: string }) => {
           )}
         </div>
       </div>
-      <button
-        className="btn btn-sm btn-primary my-2"
-        onClick={() => {
-          updateGameStatus(game._id, "ongoing", token);
-        }}
-      >
-        Start Game
-      </button>
+      {game?.status === "lobby" && (
+        <button
+          className="btn btn-sm btn-primary my-2"
+          onClick={() => {
+            updateGameStatus(game._id, "ongoing", token);
+          }}
+        >
+          Start Game
+        </button>
+      )}
       <h1>Lobby {game.players.length}</h1>
       {game.players.map(player => {
         return <h1 key={player}>{player}</h1>;
