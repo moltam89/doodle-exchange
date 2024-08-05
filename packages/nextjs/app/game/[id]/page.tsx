@@ -27,7 +27,7 @@ const GamePage = () => {
   useEffect(() => {
     const loadGame = async () => {
       const game = loadGameState();
-      if (game && game.game) {
+      if (game && game.game && game.game.inviteCode === id) {
         const { token, game: gameState } = game;
         if (connectedAddress === gameState.hostAddress) setIsHost(true);
         if (gameState.players.includes(connectedAddress)) setIsPlayer(true);
