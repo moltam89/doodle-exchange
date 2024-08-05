@@ -5,4 +5,7 @@ export interface Game {
   inviteCode: string;
   players: string[];
   winner?: string;
+  wordsList: string[];
+  totalRounds: number;
+  currentRound: number;
 }

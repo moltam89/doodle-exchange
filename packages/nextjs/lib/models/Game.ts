@@ -34,6 +34,18 @@ const gameSchema = new mongoose.Schema(
     winner: {
       type: String,
     },
+    wordsList: {
+      type: [String],
+      default: [],
+    },
+    totalRounds: {
+      type: Number,
+      default: 0,
+    },
+    currentRound: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true },
 );
