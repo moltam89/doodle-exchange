@@ -63,6 +63,7 @@ export const POST = async (request: Request) => {
       wordsList: await getWordsList(2),
       totalRounds: 2,
       currentRound: 0,
+      winners: [],
     });
 
     await newGame.save();

@@ -31,8 +31,9 @@ const gameSchema = new mongoose.Schema(
         message: "The players array must contain unique addresses.",
       },
     },
-    winner: {
-      type: String,
+    winners: {
+      type: [String],
+      default: [],
     },
     wordsList: {
       type: [String],

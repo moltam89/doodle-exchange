@@ -4,7 +4,7 @@ export interface Game {
   status: "lobby" | "ongoing" | "paused" | "finished";
   inviteCode: string;
   players: string[];
-  winner?: string;
+  winners: string[];
   wordsList: string[];
   totalRounds: number;
   currentRound: number;

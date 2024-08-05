@@ -24,7 +24,7 @@ const Player = ({
   finishGame,
 }: {
   game: Game;
-  moveToNextRound: () => void;
+  moveToNextRound: (winner: string) => void;
   finishGame: () => void;
 }) => {
   const { address: connectedAddress } = useAccount();
@@ -60,7 +60,7 @@ const Player = ({
       uploadToFirebase(game?.wordsList?.[game?.currentRound], response?.answer, connectedAddress || "", drawingDataUrl);
       setGPTAnswer(response?.answer);
       if (response?.answer.toLowerCase() === game?.wordsList?.[game?.currentRound].toLowerCase()) {
-        moveToNextRound();
+        moveToNextRound(connectedAddress || "");
       }
     } else {
       console.log("error with classification fetching part");
@@ -75,6 +75,8 @@ const Player = ({
     setCanvasDisabled(false);
     setFinalDrawing("");
   };
+
+  console.log(game);
 
   if (loading) {
     return <span className="flex flex-col m-auto loading loading-spinner loading-sm"></span>;

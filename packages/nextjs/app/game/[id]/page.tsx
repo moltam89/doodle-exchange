@@ -77,8 +77,8 @@ const GamePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [game, ablyApiKey]);
 
-  const moveToNextRound = () => {
-    if (game) updateGameRound(game._id, game?.currentRound + 1, token);
+  const moveToNextRound = (winner: string) => {
+    if (game) updateGameRound(game._id, game?.currentRound + 1, token, winner);
   };
 
   const finishGame = async () => {
