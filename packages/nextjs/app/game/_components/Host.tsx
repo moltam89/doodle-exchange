@@ -4,12 +4,19 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { CheckCircleIcon, DocumentDuplicateIcon } from "@heroicons/react/24/outline";
 import { Game } from "~~/types/game/game";
 import { updateGameRound, updateGameStatus } from "~~/utils/doodleExchange/api/apiUtils";
-import { getPlayerSubmission, getRoundWinner } from "../_helpers/gameHelper";
+import { getPlayerSubmission, getRoundWinner, getGameWinner } from "../_helpers/gameHelper";
+import { Address } from "~~/components/scaffold-eth";
 
 const Host = ({ game, token }: { game: Game; token: string }) => {
   const [inviteUrl, setInviteUrl] = useState("");
   const [inviteUrlCopied, setInviteUrlCopied] = useState(false);
   const [inviteCopied, setInviteCopied] = useState(false);
+  const [winner, setWinner] = useState<string | null>(null);
+
+  console.log("game.activeRoundIndex", game.activeRoundIndex);
+  console.log("game.rounds.length", game.rounds.length);
+
+  const lastRound = game.activeRoundIndex === game.rounds.length -1
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -19,13 +26,16 @@ const Host = ({ game, token }: { game: Game; token: string }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const player0 = game.players[0];
+  //const player0 = game.players[0];
+  const player0 = "0xeaC7f5c5a690a680C3450ad419B9470D24779Ef2";
   console.log("game.players", game.players);
   console.log("player0", player0);
   console.log("game.rounds[game.activeRoundIndex].submissions", game.rounds[game.activeRoundIndex].submissions);
   //const submission = game.rounds[game.activeRoundIndex].submissions.find(submission => submission.player === player0);
-  console.log("submission", getPlayerSubmission(game, player0));
-  console.log("getRoundWinner", getRoundWinner(game, game.activeRoundIndex));
+  console.log("submission", getPlayerSubmission(game, player0, 3));
+  console.log("getRoundWinner", getRoundWinner(game, 3));
+  console.log("getGameWinner", getGameWinner(game));
+
 
   return (
     <div className="p-6">
@@ -94,21 +104,24 @@ const Host = ({ game, token }: { game: Game; token: string }) => {
       <button
         className="btn btn-sm btn-primary my-2"
         onClick={() => {
+          lastRound ? setWinner(getGameWinner(game)) :
           updateGameRound(game._id, token);
         }}
       >
-        Start Next Round
+        {lastRound ? "End Game" : "Start Next Round"}
       </button>
       <h1>Lobby {game.players.length}</h1>
-      <h1>Round {game.activeRoundIndex + "/" + game.rounds.length}</h1>
+      <h1>Round {game.activeRoundIndex + 1 + "/" + game.rounds.length}</h1>
       <h1>Word {game.rounds[game.activeRoundIndex].word}</h1>
       {game.players.map(player => {
         return (
           <div key={player}>
             <h1>{player + " " + (getPlayerSubmission(game, player) ?? "")} </h1>
+            <Address address={player}/>
           </div>
         );
       })}
+      {winner && <h1>Winner {winner}</h1>}
     </div>
   );
 };
